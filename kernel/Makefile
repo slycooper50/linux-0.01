@@ -6,14 +6,14 @@
 # unless it's something special (ie not a .c file).
 #
 
-AR	=gar
-AS	=gas
-LD	=gld
-LDFLAGS	=-s -x
-CC	=gcc
-CFLAGS	=-Wall -O -fstrength-reduce -fomit-frame-pointer -fcombine-regs \
-	-finline-functions -mstring-insns -nostdinc -I../include
-CPP	=gcc -E -nostdinc -I../include
+AR	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ar
+AS	=/home/slycooper/Desktop/Github/lnx/gas-1.38/installation/gas
+LD	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ld
+GCCLIB	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/lib/gcc-
+CC	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/bin/gcc -B$(GCCLIB)
+CFLAGS	=-g -Wall -O -fstrength-reduce -fomit-frame-pointer -fcombine-regs \
+	-finline-functions -nostdinc -I../include
+CPP	=$(CC) -E -nostdinc -I../include
 
 .c.s:
 	$(CC) $(CFLAGS) \

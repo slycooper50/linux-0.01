@@ -1,10 +1,11 @@
-CC	=gcc
-CFLAGS	=-O -Wall -fstrength-reduce -fcombine-regs -fomit-frame-pointer \
+GCCLIB	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/lib/gcc-
+CC	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/bin/gcc -B$(GCCLIB)
+CFLAGS	=-g -O -Wall -fstrength-reduce -fcombine-regs -fomit-frame-pointer \
 	-finline-functions -nostdinc -I../include
-AS	=gas
-AR	=gar
-LD	=gld
-CPP	=gcc -E -nostdinc -I../include
+AS	=/home/slycooper/Desktop/Github/lnx/gas-1.38/installation/gas
+AR	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ar
+LD	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ld
+CPP	=$(CC) -E -nostdinc -I../include
 
 .c.o:
 	$(CC) $(CFLAGS) \

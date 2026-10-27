@@ -1,10 +1,11 @@
-AR	=gar
-AS	=gas
-CC	=gcc
-LD	=gld
-CFLAGS	=-Wall -O -fstrength-reduce -fcombine-regs -fomit-frame-pointer \
-	-mstring-insns -nostdinc -I../include
-CPP	=gcc -E -nostdinc -I../include
+AR	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ar
+AS	=/home/slycooper/Desktop/Github/lnx/gas-1.38/installation/gas
+GCCLIB	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/lib/gcc-
+CC	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/bin/gcc -B$(GCCLIB)
+LD	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ld
+CFLAGS	=-g -Wall -O -fstrength-reduce -fcombine-regs -fomit-frame-pointer \
+	-nostdinc -I../include
+CPP	=$(CC) -E -nostdinc -I../include
 
 .c.s:
 	$(CC) $(CFLAGS) \

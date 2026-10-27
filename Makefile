@@ -4,16 +4,18 @@
 # remove them from the CFLAGS defines.
 #
 
-AS86	=as -0 -a
-CC86	=cc -0
-LD86	=ld -0
+AS86	=/home/slycooper/Desktop/Github/lnx/dev86/installation/bin/as86 -a -0 
+CC86	=/home/slycooper/Desktop/Github/lnx/dev86/installation/bin/bcc -0
+LD86	=/home/slycooper/Desktop/Github/lnx/dev86/installation/bin/ld86 -s -0
 
-AS	=gas
-LD	=gld
-LDFLAGS	=-s -x -M
-CC	=gcc
-CFLAGS	=-Wall -O -fstrength-reduce -fomit-frame-pointer -fcombine-regs
-CPP	=gcc -E -nostdinc -Iinclude
+AS	=/home/slycooper/Desktop/Github/lnx/gas-1.38/installation/gas
+LD	=/home/slycooper/Desktop/Github/lnx/binutils-1.9/installation/usr/local/gnubin/ld
+LDFLAGS	=-M
+GCCLIB	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/lib/gcc-
+CC	=/home/slycooper/Desktop/Github/lnx/gcc-1.42/installation/usr/local/bin/gcc -B$(GCCLIB)
+CFLAGS	= -g -Wall -O -fstrength-reduce -fomit-frame-pointer -fcombine-regs
+CPP	=$(CC) -E -nostdinc -Iinclude
+HOSTCC = gcc -m32
 
 ARCHIVES=kernel/kernel.o mm/mm.o fs/fs.o
 LIBS	=lib/lib.a
@@ -34,9 +36,8 @@ Image: boot/boot tools/system tools/build
 	sync
 
 tools/build: tools/build.c
-	$(CC) $(CFLAGS) \
+	$(HOSTCC) \
 	-o tools/build tools/build.c
-	chmem +65000 tools/build
 
 boot/head.o: boot/head.s
 
@@ -60,12 +61,12 @@ lib/lib.a:
 	(cd lib; make)
 
 boot/boot:	boot/boot.s tools/system
-	(echo -n "SYSSIZE = (";ls -l tools/system | grep system \
-		| cut -c25-31 | tr '\012' ' '; echo "+ 15 ) / 16") > tmp.s
-	cat boot/boot.s >> tmp.s
+	(echo -n "SYSSIZE=[";stat -c %s tools/system \
+		 | tr -d '\012';  echo "+15]/16") > tmp.s
+	sed -e 's/|/!/g' -e '/\/\*/,/\*\//d' boot/boot.s >> tmp.s
 	$(AS86) -o boot/boot.o tmp.s
 	rm -f tmp.s
-	$(LD86) -s -o boot/boot boot/boot.o
+	$(LD86) -o boot/boot boot/boot.o
 
 clean:
 	rm -f Image System.map tmp_make boot/boot core
